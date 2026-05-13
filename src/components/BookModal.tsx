@@ -1,9 +1,7 @@
 import { useEffect } from 'react';
 import type { Book, BookState, ShelfId } from '../types';
+import { BookCover } from './BookCover';
 import { StarRating } from './StarRating';
-
-const FALLBACK = (id: string) =>
-  `https://placehold.co/200x300/7C2D3B/FAF7F0?text=${encodeURIComponent(id)}`;
 
 interface ShelfButtonProps {
   label: string;
@@ -74,14 +72,10 @@ export function BookModal({ book, state, onShelfChange, onRatingChange, onClose 
 
         <div className="flex gap-4 p-5 pb-4">
           {/* Cover */}
-          <div className="flex-shrink-0 w-24 sm:w-32">
-            <img
-              src={book.cover}
-              alt={`${book.title} cover`}
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = FALLBACK(book.id);
-              }}
-              className="w-full aspect-[2/3] object-cover rounded-lg shadow-md"
+          <div className="flex-shrink-0 w-24 sm:w-32 rounded-lg overflow-hidden shadow-md">
+            <BookCover
+              book={book}
+              className="w-full aspect-[2/3] object-cover"
             />
           </div>
 
