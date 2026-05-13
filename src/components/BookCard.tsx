@@ -33,6 +33,21 @@ export function BookCard({ book, state, onClick }: BookCardProps) {
             <StarRating rating={state.rating} size="sm" readonly />
           </div>
         )}
+        {state.notes && (
+          <div className="mt-1 flex items-start gap-0.5 text-warm-400 min-w-0">
+            <svg
+              className="w-2.5 h-2.5 shrink-0 mt-px"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              aria-hidden="true"
+            >
+              <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+            </svg>
+            <span className="text-[10px] font-sans leading-tight line-clamp-1 min-w-0">
+              {state.notes.length > 30 ? state.notes.slice(0, 30) + '…' : state.notes}
+            </span>
+          </div>
+        )}
       </div>
     </button>
   );

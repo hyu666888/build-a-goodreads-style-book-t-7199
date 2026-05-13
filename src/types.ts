@@ -12,6 +12,7 @@ export interface Book {
 export interface BookState {
   shelf: ShelfId | null;
   rating: number;
+  notes: string;
 }
 
 export type BookshelfState = Record<string, BookState>;

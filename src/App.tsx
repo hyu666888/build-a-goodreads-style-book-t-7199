@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { BOOKS } from './data/books';
-import type { BookshelfState, ShelfId } from './types';
+import type { BookState, BookshelfState, ShelfId } from './types';
 import { ShelfSection } from './components/ShelfSection';
 import { BookCard } from './components/BookCard';
 import { BookModal } from './components/BookModal';
@@ -20,7 +20,7 @@ function saveState(state: BookshelfState) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
-const DEFAULT_STATE: { shelf: ShelfId | null; rating: number } = { shelf: null, rating: 0 };
+const DEFAULT_STATE: BookState = { shelf: null, rating: 0, notes: '' };
 
 export default function App() {
   const [bookshelf, setBookshelf] = useState<BookshelfState>(loadState);
@@ -72,6 +72,14 @@ export default function App() {
     [selectedBookId, updateBook]
   );
 
+  const handleNotesChange = useCallback(
+    (notes: string) => {
+      if (!selectedBookId) return;
+      updateBook(selectedBookId, { notes });
+    },
+    [selectedBookId, updateBook]
+  );
+
   const totalRead = BOOKS.filter((b) => bookshelf[b.id]?.shelf === 'read').length;
 
   return (
@@ -85,7 +93,7 @@ export default function App() {
               My Bookshelf
             </h1>
             <p className="font-sans text-xs text-warm-600 mt-0.5">
-              {totalRead} book{totalRead !== 1 ? 's' : ''} read · {BOOKS.length} in library
+              {totalRead} book{totalRead !== 1 ? 's' : ''} read · {unshelfed.length} in library
             </p>
           </div>
         </div>
@@ -200,6 +208,7 @@ export default function App() {
           state={selectedState}
           onShelfChange={handleShelfChange}
           onRatingChange={handleRatingChange}
+          onNotesChange={handleNotesChange}
           onClose={() => setSelectedBookId(null)}
         />
       )}
